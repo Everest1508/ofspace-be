@@ -1,0 +1,465 @@
+{
+	"info": {
+		"_postman_id": "ofspace-api-collection",
+		"name": "OFSPACE API",
+		"description": "API collection for OFSPACE.CO backend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.environment.set('auth_token', jsonData.token);",
+									"    pm.environment.set('user_id', jsonData.user.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"akif.khan@ofspace.co\",\n    \"password\": \"your_password\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/login/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login",
+								""
+							]
+						},
+						"description": "Login with email and password. Returns authentication token."
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/auth/logout/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"logout",
+								""
+							]
+						},
+						"description": "Logout and invalidate authentication token."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Current User",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/auth/me/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"me",
+								""
+							]
+						},
+						"description": "Get current authenticated user information."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Profile",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"full_name\": \"Akif Khan\",\n    \"first_name\": \"Akif\",\n    \"last_name\": \"Khan\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/profile/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"profile",
+								""
+							]
+						},
+						"description": "Update user profile information."
+					},
+					"response": []
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"old_password\": \"old_password\",\n    \"new_password\": \"new_password\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/change-password/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"change-password",
+								""
+							]
+						},
+						"description": "Change user password."
+					},
+					"response": []
+				}
+			],
+			"description": "Authentication endpoints for login, logout, and user management."
+		},
+		{
+			"name": "Dashboard",
+			"item": [
+				{
+					"name": "Get Dashboard Metrics",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/dashboard/metrics/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"dashboard",
+								"metrics",
+								""
+							]
+						},
+						"description": "Get dashboard metrics including total reports, active users, monthly growth, and system activity."
+					},
+					"response": []
+				}
+			],
+			"description": "Dashboard endpoints for analytics and metrics."
+		},
+		{
+			"name": "Reports",
+			"item": [
+				{
+					"name": "List Reports",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/reports/reports/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"reports",
+								"reports",
+								""
+							]
+						},
+						"description": "List all reports created by the authenticated user."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Report",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/reports/reports/1/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"reports",
+								"reports",
+								"1",
+								""
+							]
+						},
+						"description": "Get a specific report by ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Create Report",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"service_details\": \"Service Details\",\n    \"account_number\": \"ACC123456\",\n    \"service_location\": \"Main Branch\",\n    \"foundation_year\": 2020,\n    \"usage_details\": \"Usage details here\",\n    \"user_biometric\": \"Biometric data\",\n    \"credit_limit\": \"50000\",\n    \"monthly_bill_report\": \"Monthly bill report\",\n    \"annual_bill_report\": \"Annual bill report\",\n    \"notifications_comments\": \"Notifications and comments here\",\n    \"service_recipient_at_branch\": \"John Doe\",\n    \"monthly_service_reports\": \"Monthly service reports details\",\n    \"annual_service_reports\": \"Annual service reports details\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/reports/reports/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"reports",
+								"reports",
+								""
+							]
+						},
+						"description": "Create a new report."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Report",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"service_details\": \"Updated Service Details\",\n    \"account_number\": \"ACC123456\",\n    \"notifications_comments\": \"Updated comments\",\n    \"is_active\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/reports/reports/1/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"reports",
+								"reports",
+								"1",
+								""
+							]
+						},
+						"description": "Update a report (partial update supported)."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Report",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/reports/reports/1/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"reports",
+								"reports",
+								"1",
+								""
+							]
+						},
+						"description": "Delete a report."
+					},
+					"response": []
+				}
+			],
+			"description": "Report management endpoints."
+		},
+		{
+			"name": "Settings",
+			"item": [
+				{
+					"name": "Get User Settings",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/settings/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"settings",
+								""
+							]
+						},
+						"description": "Get user settings. Creates default settings if they don't exist."
+					},
+					"response": []
+				},
+				{
+					"name": "Update User Settings",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"language\": \"en\",\n    \"email_notifications\": true,\n    \"include_logo_in_reports\": true\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/settings/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"settings",
+								""
+							]
+						},
+						"description": "Update user settings. Language options: 'en' (English) or 'ar' (Arabic)."
+					},
+					"response": []
+				}
+			],
+			"description": "User settings and preferences endpoints."
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8000",
+			"type": "string"
+		},
+		{
+			"key": "auth_token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
+
